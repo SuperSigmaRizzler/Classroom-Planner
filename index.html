@@ -196,6 +196,172 @@
 
 
         /* =========================================
+           RANDOMIZER BUTTON
+        ========================================= */
+
+        .randomizer-glow {
+            position: relative;
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.28);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #a855f7 0%,
+                    #7c3aed 28%,
+                    #2563eb 63%,
+                    #06b6d4 100%
+                );
+
+            color: #ffffff;
+
+            font-weight: 900;
+
+            box-shadow:
+                0 0 16px
+                rgba(168, 85, 247, 0.42),
+
+                0 0 34px
+                rgba(37, 99, 235, 0.30),
+
+                0 0 62px
+                rgba(6, 182, 212, 0.16),
+
+                inset
+                0 1px 0
+                rgba(255, 255, 255, 0.30);
+
+            text-shadow:
+                0 1px 10px
+                rgba(0, 0, 0, 0.18);
+
+            animation:
+                randomizerPulse
+                2.8s ease-in-out infinite;
+        }
+
+
+        .randomizer-glow::before {
+            content: "";
+
+            position: absolute;
+
+            top: -60%;
+            left: -45%;
+
+            width: 24%;
+            height: 220%;
+
+            transform:
+                rotate(18deg);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.55),
+                    transparent
+                );
+
+            filter: blur(1px);
+
+            pointer-events: none;
+
+            animation:
+                randomizerShine
+                3.2s ease-in-out infinite;
+        }
+
+
+        .randomizer-glow:hover {
+            transform:
+                translateY(-2px)
+                scale(1.02);
+
+            border-color:
+                rgba(255, 255, 255, 0.48);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #c084fc 0%,
+                    #8b5cf6 28%,
+                    #3b82f6 63%,
+                    #22d3ee 100%
+                );
+
+            box-shadow:
+                0 0 22px
+                rgba(168, 85, 247, 0.58),
+
+                0 0 42px
+                rgba(37, 99, 235, 0.36),
+
+                0 0 76px
+                rgba(6, 182, 212, 0.20),
+
+                inset
+                0 1px 0
+                rgba(255, 255, 255, 0.36);
+        }
+
+
+        .randomizer-glow:active {
+            transform:
+                translateY(0)
+                scale(0.985);
+        }
+
+
+        @keyframes randomizerPulse {
+
+            0%,
+            100% {
+                filter:
+                    brightness(1)
+                    saturate(1);
+            }
+
+            50% {
+                filter:
+                    brightness(1.12)
+                    saturate(1.12);
+            }
+
+        }
+
+
+        @keyframes randomizerShine {
+
+            0%,
+            18% {
+                left: -45%;
+            }
+
+            48%,
+            100% {
+                left: 125%;
+            }
+
+        }
+
+
+        @media (
+            prefers-reduced-motion: reduce
+        ) {
+
+            .randomizer-glow,
+            .randomizer-glow::before {
+                animation: none;
+            }
+
+        }
+
+
+        /* =========================================
            MAIN LAYOUT
         ========================================= */
 
@@ -1346,6 +1512,335 @@
 }
 
 /* ==========================================
+   RANDOMIZER
+   ========================================== */
+
+.randomizer-sheet {
+    position: fixed;
+    inset: 0;
+
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.randomizer-sheet.open {
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.randomizer-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0);
+
+    transition:
+        background 0.25s ease;
+}
+
+.randomizer-sheet.open .randomizer-backdrop {
+    background: rgba(0, 0, 0, 0.62);
+}
+
+.randomizer-panel {
+    position: relative;
+
+    width:
+        min(560px, 100%);
+
+    padding: 20px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 20px;
+
+    background: #101522;
+
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.55);
+
+    transform:
+        translateY(20px)
+        scale(0.97);
+
+    opacity: 0;
+
+    transition:
+        transform 0.28s cubic-bezier(.22, 1, .36, 1),
+        opacity 0.22s ease;
+}
+
+.randomizer-sheet.open .randomizer-panel {
+    transform:
+        translateY(0)
+        scale(1);
+
+    opacity: 1;
+}
+
+.randomizer-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.randomizer-title {
+    color: #ffffff;
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+.randomizer-subtitle {
+    margin-top: 5px;
+
+    color: rgba(255, 255, 255, 0.48);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.randomizer-close {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color:
+        rgba(255, 255, 255, 0.72);
+
+    font-size: 24px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        0.18s ease;
+}
+
+.randomizer-close:hover {
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    color: #ffffff;
+}
+
+.randomizer-options {
+    display: grid;
+
+    gap: 9px;
+}
+
+.randomizer-option {
+    position: relative;
+
+    display: block;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+.randomizer-option input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.randomizer-option-content {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 14px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.randomizer-option:hover .randomizer-option-content {
+    transform: translateY(-1px);
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border-color:
+        rgba(255, 255, 255, 0.15);
+}
+
+.randomizer-option input:checked
++ .randomizer-option-content {
+    border-color:
+        rgba(110, 168, 255, 0.65);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(110, 168, 255, 0.12),
+            rgba(139, 124, 255, 0.10)
+        );
+
+    box-shadow:
+        0 0 24px rgba(110, 168, 255, 0.08);
+}
+
+.randomizer-radio {
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    border:
+        2px solid rgba(255, 255, 255, 0.25);
+
+    border-radius: 50%;
+
+    position: relative;
+}
+
+.randomizer-option input:checked
++ .randomizer-option-content
+.randomizer-radio {
+    border-color:
+        var(--accent);
+}
+
+.randomizer-option input:checked
++ .randomizer-option-content
+.randomizer-radio::after {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        var(--accent);
+}
+
+.randomizer-option-text {
+    min-width: 0;
+}
+
+.randomizer-option-text strong {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    font-weight: 750;
+}
+
+.randomizer-option-text small {
+    display: block;
+
+    margin-top: 4px;
+
+    color:
+        rgba(255, 255, 255, 0.45);
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+.randomizer-info {
+    margin:
+        14px 0 16px;
+
+    padding:
+        11px 12px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color:
+        rgba(255, 255, 255, 0.48);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+.randomizer-generate {
+    width: 100%;
+
+    margin-top: 2px;
+}
+
+@media (max-width: 560px) {
+
+    .randomizer-sheet {
+        padding: 12px;
+    }
+
+    .randomizer-panel {
+        padding: 17px;
+        border-radius: 17px;
+    }
+
+    .randomizer-title {
+        font-size: 18px;
+    }
+
+}
+
+
+/* ==========================================
    EXPORT CLASSROOM NAMES
    ========================================== */
 
@@ -1480,6 +1975,15 @@
           ⬇ Download
       </button>
       <button class="button danger" id="resetLayout" type="button" title="Reset the entire classroom layout">🚀 Reset Entire Layout</button>
+
+      <button
+          class="button randomizer-glow"
+          id="randomizerButton"
+          type="button"
+          title="Randomize classroom seating"
+      >
+          🔀 Randomizer
+      </button>
 
         </div>
 
@@ -3852,6 +4356,177 @@ function deleteSeat(seatId) {
 
 </script>
 
+<div
+    class="randomizer-sheet"
+    id="randomizerSheet"
+    aria-hidden="true"
+>
+
+    <div
+        class="randomizer-backdrop"
+        id="randomizerBackdrop"
+    ></div>
+
+
+    <div
+        class="randomizer-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="randomizerTitle"
+    >
+
+        <div class="randomizer-header">
+
+            <div>
+
+                <div
+                    class="randomizer-title"
+                    id="randomizerTitle"
+                >
+                    Randomizer
+                </div>
+
+                <div class="randomizer-subtitle">
+                    Generate a randomized classroom
+                    directly from the 28 students in
+                    class 8 Creativity. Student names
+                    are displayed using first names only.
+                </div>
+
+            </div>
+
+
+            <button
+                class="randomizer-close"
+                id="randomizerClose"
+                type="button"
+                aria-label="Close randomizer"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="randomizer-options">
+
+            <label class="randomizer-option">
+
+                <input
+                    type="radio"
+                    name="randomizerMode"
+                    value="regular"
+                    checked
+                >
+
+                <span class="randomizer-option-content">
+
+                    <span class="randomizer-radio"></span>
+
+                    <span class="randomizer-option-text">
+
+                        <strong>
+                            Regular Shuffle
+                        </strong>
+
+                        <small>
+                            All 28 students are randomized
+                            freely across the classroom.
+                        </small>
+
+                    </span>
+
+                </span>
+
+            </label>
+
+
+            <label class="randomizer-option">
+
+                <input
+                    type="radio"
+                    name="randomizerMode"
+                    value="boys-girls"
+                >
+
+                <span class="randomizer-option-content">
+
+                    <span class="randomizer-radio"></span>
+
+                    <span class="randomizer-option-text">
+
+                        <strong>
+                            Boys - Girls
+                        </strong>
+
+                        <small>
+                            Each paired desk is randomized
+                            as one boy + one girl whenever
+                            the class numbers allow it.
+                        </small>
+
+                    </span>
+
+                </span>
+
+            </label>
+
+
+            <label class="randomizer-option">
+
+                <input
+                    type="radio"
+                    name="randomizerMode"
+                    value="boys-boys-girls-girls"
+                >
+
+                <span class="randomizer-option-content">
+
+                    <span class="randomizer-radio"></span>
+
+                    <span class="randomizer-option-text">
+
+                        <strong>
+                            Boys - Boys, Girls - Girls
+                        </strong>
+
+                        <small>
+                            Each paired desk keeps the same
+                            gender whenever mathematically
+                            possible.
+                        </small>
+
+                    </span>
+
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <div class="randomizer-info">
+            Class 8 Creativity · 28 students ·
+            15 boys · 13 girls.
+            Names use first-name display, while
+            gender modes assign by physical
+            two-seat desk pairs.
+        </div>
+
+
+        <button
+            class="button primary randomizer-generate"
+            id="generateRandomizedClassroom"
+            type="button"
+        >
+            Generate Randomized Classroom
+        </button>
+
+    </div>
+
+</div>
+
+
 <div class="download-sheet" id="downloadSheet">
     <div class="download-sheet-backdrop" id="downloadBackdrop"></div>
 
@@ -4185,8 +4860,28 @@ function createExportClone() {
 
     /*
         ======================================
-        EXPORT NAMES — AUTO SIZE
+        EXPORT NAMES — GLOBAL SIZE
         ======================================
+
+        IMPORTANT:
+
+        Every exported name uses ONE identical
+        font size.
+
+        The size is determined by the most
+        difficult name to fit inside its seat.
+
+        Example:
+
+        Sashikirana → determines the size
+
+        Marvell
+        Sebastian
+        Victoria
+        Enzo
+        Sashikirana
+
+        ALL use that same final size.
     */
 
     clone.style.visibility =
@@ -4200,31 +4895,20 @@ function createExportClone() {
     );
 
 
-    /*
-        Start large.
+    const exportNames =
+        Array.from(
+            clone.querySelectorAll(
+                ".export-name"
+            )
+        );
 
-        Shrink only when the actual rendered
-        text would touch the seat boundaries.
+
+    /*
+        Base styling for every export name.
     */
 
-    clone
-        .querySelectorAll(
-            ".export-name"
-        )
-        .forEach(nameElement => {
-
-            const seat =
-                nameElement.closest(
-                    ".seat"
-                );
-
-            if (!seat) {
-                return;
-            }
-
-
-            nameElement.style.fontSize =
-                "60px";
+    exportNames.forEach(
+        nameElement => {
 
             nameElement.style.fontWeight =
                 "900";
@@ -4253,18 +4937,90 @@ function createExportClone() {
             nameElement.style.padding =
                 "0";
 
+        }
+    );
 
-            const minFontSize =
-                12;
 
-            const maxFontSize =
-                60;
+    /*
+        ======================================
+        GLOBAL FONT SIZE CALCULATION
+        ======================================
 
-            const horizontalPadding =
-                14;
+        Start large.
 
-            const verticalPadding =
-                20;
+        Keep shrinking ONE shared font size
+        until EVERY name fits.
+
+        Therefore the longest name becomes
+        the limiting factor and all shorter
+        names use exactly the same size.
+    */
+
+    const MIN_FONT_SIZE =
+        12;
+
+    const MAX_FONT_SIZE =
+        60;
+
+    const HORIZONTAL_PADDING =
+        14;
+
+    const VERTICAL_PADDING =
+        20;
+
+
+    function allExportNamesFit(
+        fontSize
+    ) {
+
+        /*
+            Apply the SAME font size to
+            every name before measuring.
+        */
+
+        exportNames.forEach(
+            nameElement => {
+
+                nameElement.style.fontSize =
+                    `${fontSize}px`;
+
+            }
+        );
+
+
+        /*
+            Force browser layout calculation.
+        */
+
+        void clone.offsetHeight;
+
+
+        /*
+            Test EVERY name.
+
+            One name failing means the global
+            size is still too large.
+        */
+
+        for (
+            const nameElement
+            of exportNames
+        ) {
+
+            const seat =
+                nameElement.closest(
+                    ".seat"
+                );
+
+
+            if (
+                !seat ||
+                !nameElement.firstChild
+            ) {
+
+                continue;
+
+            }
 
 
             const seatRect =
@@ -4275,75 +5031,85 @@ function createExportClone() {
                 document.createRange();
 
 
-            if (
-                !nameElement.firstChild
-            ) {
-                return;
-            }
-
-
             range.selectNodeContents(
                 nameElement.firstChild
             );
 
 
-            let fontSize =
-                maxFontSize;
+            const textRect =
+                range.getBoundingClientRect();
 
 
-            while (
-                fontSize >
-                minFontSize
+            const fitsWidth =
+                textRect.width <=
+                (
+                    seatRect.width -
+                    HORIZONTAL_PADDING
+                );
+
+
+            const fitsHeight =
+                textRect.height <=
+                (
+                    seatRect.height -
+                    VERTICAL_PADDING
+                );
+
+
+            if (
+                !fitsWidth ||
+                !fitsHeight
             ) {
 
-                nameElement.style.fontSize =
-                    `${fontSize}px`;
-
-
-                void nameElement.offsetWidth;
-
-
-                const textRect =
-                    range.getBoundingClientRect();
-
-
-                const fitsWidth =
-                    textRect.width <=
-                    (
-                        seatRect.width -
-                        horizontalPadding
-                    );
-
-
-                const fitsHeight =
-                    textRect.height <=
-                    (
-                        seatRect.height -
-                        verticalPadding
-                    );
-
-
-                if (
-                    fitsWidth &&
-                    fitsHeight
-                ) {
-                    break;
-                }
-
-
-                fontSize -= 1;
+                return false;
 
             }
 
+        }
+
+
+        return true;
+
+    }
+
+
+    let globalFontSize =
+        MAX_FONT_SIZE;
+
+
+    while (
+        globalFontSize >
+        MIN_FONT_SIZE &&
+        !allExportNamesFit(
+            globalFontSize
+        )
+    ) {
+
+        globalFontSize -= 1;
+
+    }
+
+
+    /*
+        Apply the final GLOBAL size
+        one last time to every name.
+    */
+
+    exportNames.forEach(
+        nameElement => {
 
             nameElement.style.fontSize =
-                `${Math.max(
-                    fontSize,
-                    minFontSize
-                )}px`;
+                `${globalFontSize}px`;
 
-        });
+        }
+    );
 
+
+    /*
+        The browser has now calculated
+        one shared font size for the entire
+        exported classroom.
+    */
 
     clone.style.visibility =
         "visible";
@@ -4383,18 +5149,6 @@ function createExportClone() {
                 "none";
 
         });
-
-
-    /*
-        Append temporarily.
-
-        It is removed immediately after
-        PNG/JPG/Print is finished.
-    */
-
-    document.body.appendChild(
-        clone
-    );
 
 
     return clone;
@@ -4578,6 +5332,971 @@ async function exportClassroom(
     DOWNLOAD OPTIONS
     ==========================================
 */
+
+/*
+    ==========================================
+    RANDOMIZER
+    ==========================================
+*/
+
+function getRandomizerDisplayName(student) {
+
+    const fullName =
+        String(
+            student && student.name
+                ? student.name
+                : ""
+        ).trim();
+
+
+    /*
+        SPECIAL CASE
+
+        Rafael Enzo Susilo
+        is displayed as Enzo.
+    */
+
+    if (
+        fullName ===
+        "Rafael Enzo Susilo"
+    ) {
+
+        return "Enzo";
+
+    }
+
+
+    /*
+        NORMAL CASE
+
+        Take only the first word
+        from the full student name.
+    */
+
+    return (
+        fullName.split(/\s+/)[0] ||
+        ""
+    );
+
+}
+
+
+const RANDOMIZER_STUDENTS = [
+
+    {
+        name: "Adriana Renata Hutabarat",
+        gender: "P"
+    },
+
+    {
+        name: "Arvien Verell",
+        gender: "L"
+    },
+
+    {
+        name: "Carissa Angelina Wijaya",
+        gender: "P"
+    },
+
+    {
+        name: "Clementius Francis Iskandar",
+        gender: "L"
+    },
+
+    {
+        name: "Darren Ardinata Tausand",
+        gender: "L"
+    },
+
+    {
+        name: "Edbert Theo",
+        gender: "L"
+    },
+
+    {
+        name: "Edelyne Aurelia Susandi",
+        gender: "P"
+    },
+
+    {
+        name: "Felix Richie Lee",
+        gender: "L"
+    },
+
+    {
+        name: "Fransiska Selimar Simanjuntak",
+        gender: "P"
+    },
+
+    {
+        name: "Gisele Felicia Liandy",
+        gender: "P"
+    },
+
+    {
+        name: "Immanuel Tri Kuniawan",
+        gender: "L"
+    },
+
+    {
+        name: "Isabel Daniella Winata",
+        gender: "P"
+    },
+
+    {
+        name: "Javyn Aurelio Tan",
+        gender: "L"
+    },
+
+    {
+        name: "Jesselyne Vallencia Liem",
+        gender: "P"
+    },
+
+    {
+        name: "Jorge Avery Burman",
+        gender: "L"
+    },
+
+    {
+        name: "Justin Thomas",
+        gender: "L"
+    },
+
+    {
+        name: "Kayla Valerie Kwok",
+        gender: "P"
+    },
+
+    {
+        name: "Kevin Imanuel Haloho",
+        gender: "L"
+    },
+
+    {
+        name: "Margaretha Mirvin Huang",
+        gender: "P"
+    },
+
+    {
+        name: "Marvell Jonathan Siau",
+        gender: "L"
+    },
+
+    {
+        name: "Mikayla Grace Tanjaya",
+        gender: "P"
+    },
+
+    {
+        name: "Rafael Enzo Susilo",
+        gender: "L"
+    },
+
+    {
+        name: "Rex Vittorio Chandra",
+        gender: "L"
+    },
+
+    {
+        name: "Sashikirana Putri Ardiansyah",
+        gender: "P"
+    },
+
+    {
+        name: "Sebastian Joe Hamilton",
+        gender: "L"
+    },
+
+    {
+        name: "Verdhio Leonard Susmono Alang",
+        gender: "L"
+    },
+
+    {
+        name: "Victoria Christabelle Soenarno",
+        gender: "P"
+    }
+
+];
+
+
+const randomizerSheet =
+    document.getElementById(
+        "randomizerSheet"
+    );
+
+
+const randomizerBackdrop =
+    document.getElementById(
+        "randomizerBackdrop"
+    );
+
+
+const randomizerClose =
+    document.getElementById(
+        "randomizerClose"
+    );
+
+
+const randomizerButton =
+    document.getElementById(
+        "randomizerButton"
+    );
+
+
+const generateRandomizedClassroom =
+    document.getElementById(
+        "generateRandomizedClassroom"
+    );
+
+
+function shuffleArray(
+    items
+) {
+
+    const array =
+        [...items];
+
+
+    for (
+        let index = array.length - 1;
+        index > 0;
+        index--
+    ) {
+
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                (index + 1)
+            );
+
+
+        [
+            array[index],
+            array[randomIndex]
+        ] = [
+            array[randomIndex],
+            array[index]
+        ];
+
+    }
+
+
+    return array;
+
+}
+
+
+function openRandomizer() {
+
+    randomizerSheet.classList.add(
+        "open"
+    );
+
+    randomizerSheet.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+function closeRandomizer() {
+
+    randomizerSheet.classList.remove(
+        "open"
+    );
+
+    randomizerSheet.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+function getRandomizerMode() {
+
+    const selected =
+        document.querySelector(
+            'input[name="randomizerMode"]:checked'
+        );
+
+
+    return selected
+        ? selected.value
+        : "regular";
+
+}
+
+
+/*
+    Return every physical desk as:
+
+        [visualLeftPhysicalIndex,
+         visualRightPhysicalIndex]
+
+    The physical desk itself never moves.
+*/
+
+function getPhysicalDeskPairs() {
+
+    const desksPerRow =
+        Number(data.desks);
+
+    const seatsPerRow =
+        desksPerRow * 2;
+
+    const pairs = [];
+
+
+    for (
+        let row = 0;
+        row < Number(data.rows);
+        row++
+    ) {
+
+        const reverse =
+            row % 2 === 1;
+
+
+        for (
+            let deskPosition = 0;
+            deskPosition < desksPerRow;
+            deskPosition++
+        ) {
+
+            const physicalDesk =
+                reverse
+                    ? desksPerRow - 1 - deskPosition
+                    : deskPosition;
+
+
+            const physicalLeftIndex =
+                row *
+                seatsPerRow
+                +
+                physicalDesk *
+                2;
+
+
+            const physicalRightIndex =
+                physicalLeftIndex + 1;
+
+
+            const pair =
+                reverse
+                    ? [
+                        physicalRightIndex,
+                        physicalLeftIndex
+                    ]
+                    : [
+                        physicalLeftIndex,
+                        physicalRightIndex
+                    ];
+
+
+            const leftSeat =
+                data.seats[
+                    pair[0]
+                ];
+
+            const rightSeat =
+                data.seats[
+                    pair[1]
+                ];
+
+
+            /*
+                Gender modes need a complete
+                two-seat physical desk.
+
+                A partially deleted desk is
+                therefore not eligible.
+            */
+
+            if (
+                leftSeat &&
+                rightSeat &&
+                !leftSeat.deleted &&
+                !rightSeat.deleted
+            ) {
+
+                pairs.push(
+                    pair
+                );
+
+            }
+
+        }
+
+    }
+
+
+    return pairs;
+
+}
+
+
+function getActiveSeatIndices() {
+
+    return data.seats
+        .map(
+            (
+                seat,
+                index
+            ) =>
+                seat &&
+                !seat.deleted
+                    ? index
+                    : null
+        )
+        .filter(
+            index =>
+                index !== null
+        );
+
+}
+
+
+function clearActiveNames() {
+
+    data.seats.forEach(
+        seat => {
+
+            if (
+                seat &&
+                !seat.deleted
+            ) {
+
+                seat.name = "";
+
+            }
+
+        }
+    );
+
+}
+
+
+function fillRegularShuffle() {
+
+    const activeSeats =
+        shuffleArray(
+            getActiveSeatIndices()
+        );
+
+
+    if (
+        activeSeats.length <
+        RANDOMIZER_STUDENTS.length
+    ) {
+
+        alert(
+            `Randomizer needs at least ${RANDOMIZER_STUDENTS.length} active seats.`
+        );
+
+        return false;
+
+    }
+
+
+    const selectedSeats =
+        activeSeats.slice(
+            0,
+            RANDOMIZER_STUDENTS.length
+        );
+
+
+    const students =
+        shuffleArray(
+            RANDOMIZER_STUDENTS
+        );
+
+
+    students.forEach(
+        (
+            student,
+            index
+        ) => {
+
+            data.seats[
+                selectedSeats[index]
+            ].name =
+                getRandomizerDisplayName(
+                    student
+                );
+
+        }
+    );
+
+
+    return true;
+
+}
+
+
+function fillBoysGirlsShuffle() {
+
+    const deskPairs =
+        shuffleArray(
+            getPhysicalDeskPairs()
+        );
+
+
+    if (
+        deskPairs.length < 14
+    ) {
+
+        alert(
+            "Boys - Girls needs at least 14 complete paired desks."
+        );
+
+        return false;
+
+    }
+
+
+    const selectedPairs =
+        deskPairs.slice(
+            0,
+            14
+        );
+
+
+    const boys =
+        shuffleArray(
+            RANDOMIZER_STUDENTS.filter(
+                student =>
+                    student.gender === "L"
+            )
+        );
+
+
+    const girls =
+        shuffleArray(
+            RANDOMIZER_STUDENTS.filter(
+                student =>
+                    student.gender === "P"
+            )
+        );
+
+
+    /*
+        13 mixed desks:
+
+            L + P
+
+        One remaining boy:
+
+            L + L
+
+        This is required because the class
+        has 15 boys and 13 girls.
+    */
+
+    const pairAssignments = [];
+
+
+    for (
+        let index = 0;
+        index < 13;
+        index++
+    ) {
+
+        const mixed =
+            Math.random() < 0.5
+                ? [
+                    boys[index],
+                    girls[index]
+                ]
+                : [
+                    girls[index],
+                    boys[index]
+                ];
+
+
+        pairAssignments.push(
+            mixed
+        );
+
+    }
+
+
+    pairAssignments.push(
+        [
+            boys[13],
+            boys[14]
+        ]
+    );
+
+
+    const randomizedAssignments =
+        shuffleArray(
+            pairAssignments
+        );
+
+
+    randomizedAssignments.forEach(
+        (
+            assignment,
+            index
+        ) => {
+
+            const pair =
+                selectedPairs[index];
+
+
+            data.seats[
+                pair[0]
+            ].name =
+                getRandomizerDisplayName(
+                    assignment[0]
+                );
+
+
+            data.seats[
+                pair[1]
+            ].name =
+                getRandomizerDisplayName(
+                    assignment[1]
+                );
+
+        }
+    );
+
+
+    return true;
+
+}
+
+
+function fillBoysBoysGirlsGirlsShuffle() {
+
+    const deskPairs =
+        shuffleArray(
+            getPhysicalDeskPairs()
+        );
+
+
+    if (
+        deskPairs.length < 14
+    ) {
+
+        alert(
+            "Boys - Boys, Girls - Girls needs at least 14 complete paired desks."
+        );
+
+        return false;
+
+    }
+
+
+    const selectedPairs =
+        deskPairs.slice(
+            0,
+            14
+        );
+
+
+    const boys =
+        shuffleArray(
+            RANDOMIZER_STUDENTS.filter(
+                student =>
+                    student.gender === "L"
+            )
+        );
+
+
+    const girls =
+        shuffleArray(
+            RANDOMIZER_STUDENTS.filter(
+                student =>
+                    student.gender === "P"
+            )
+        );
+
+
+    const pairAssignments = [];
+
+
+    /*
+        15 boys:
+
+            7 complete L/L pairs
+            + 1 extra boy
+
+        13 girls:
+
+            6 complete P/P pairs
+            + 1 extra girl
+
+        The two leftovers form one mixed desk.
+
+        That is the only mathematically possible
+        result with 15 L + 13 P and 14 desks.
+    */
+
+    let boyIndex = 0;
+
+
+    for (
+        let pair = 0;
+        pair < 7;
+        pair++
+    ) {
+
+        pairAssignments.push(
+            [
+                boys[boyIndex],
+                boys[boyIndex + 1]
+            ]
+        );
+
+
+        boyIndex += 2;
+
+    }
+
+
+    let girlIndex = 0;
+
+
+    for (
+        let pair = 0;
+        pair < 6;
+        pair++
+    ) {
+
+        pairAssignments.push(
+            [
+                girls[girlIndex],
+                girls[girlIndex + 1]
+            ]
+        );
+
+
+        girlIndex += 2;
+
+    }
+
+
+    const finalMixedPair =
+        Math.random() < 0.5
+            ? [
+                boys[14],
+                girls[12]
+            ]
+            : [
+                girls[12],
+                boys[14]
+            ];
+
+
+    pairAssignments.push(
+        finalMixedPair
+    );
+
+
+    const randomizedAssignments =
+        shuffleArray(
+            pairAssignments
+        );
+
+
+    randomizedAssignments.forEach(
+        (
+            assignment,
+            index
+        ) => {
+
+            const pair =
+                selectedPairs[index];
+
+
+            data.seats[
+                pair[0]
+            ].name =
+                getRandomizerDisplayName(
+                    assignment[0]
+                );
+
+
+            data.seats[
+                pair[1]
+            ].name =
+                getRandomizerDisplayName(
+                    assignment[1]
+                );
+
+        }
+    );
+
+
+    return true;
+
+}
+
+
+function generateRandomizedClassroomNow() {
+
+    /*
+        First validate that the classroom can
+        hold every student before touching names.
+    */
+
+    const activeSeatCount =
+        getActiveSeatIndices().length;
+
+
+    if (
+        activeSeatCount <
+        RANDOMIZER_STUDENTS.length
+    ) {
+
+        alert(
+            `There are only ${activeSeatCount} active seats, but this class has ${RANDOMIZER_STUDENTS.length} students.`
+        );
+
+        return;
+
+    }
+
+
+    const mode =
+        getRandomizerMode();
+
+
+    /*
+        Gender modes need 14 complete desks.
+    */
+
+    if (
+        mode !== "regular" &&
+        getPhysicalDeskPairs().length < 14
+    ) {
+
+        alert(
+            "This mode needs 14 complete paired desks. Restore deleted seats first."
+        );
+
+        return;
+
+    }
+
+
+    clearActiveNames();
+
+
+    let success =
+        false;
+
+
+    if (
+        mode === "regular"
+    ) {
+
+        success =
+            fillRegularShuffle();
+
+    } else if (
+        mode === "boys-girls"
+    ) {
+
+        success =
+            fillBoysGirlsShuffle();
+
+    } else {
+
+        success =
+            fillBoysBoysGirlsGirlsShuffle();
+
+    }
+
+
+    if (!success) {
+
+        return;
+
+    }
+
+
+    saveData();
+
+    generateClassroom(
+        false
+    );
+
+
+    closeRandomizer();
+
+
+    status.textContent =
+        "Randomized classroom generated ✓";
+
+
+    setTimeout(
+        () => {
+
+            updateStatus();
+
+        },
+        1400
+    );
+
+}
+
+
+/*
+    ==========================================
+    OPEN / CLOSE
+    ==========================================
+*/
+
+randomizerButton.addEventListener(
+    "click",
+    openRandomizer
+);
+
+
+randomizerClose.addEventListener(
+    "click",
+    closeRandomizer
+);
+
+
+randomizerBackdrop.addEventListener(
+    "click",
+    closeRandomizer
+);
+
+
+generateRandomizedClassroom.addEventListener(
+    "click",
+    generateRandomizedClassroomNow
+);
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            randomizerSheet.classList.contains(
+                "open"
+            )
+        ) {
+
+            closeRandomizer();
+
+        }
+
+    }
+);
+
+
 
 document
     .querySelectorAll(
