@@ -1188,6 +1188,259 @@
     background: rgba(255, 100, 124, 0.08);
     box-shadow: 0 0 18px rgba(255, 100, 124, 0.10);
 }
+
+/* ==========================================
+   DOWNLOAD SHEET
+   ========================================== */
+
+.download-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.download-sheet.open {
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.download-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.28s ease;
+}
+
+.download-sheet.open .download-sheet-backdrop {
+    background: rgba(0, 0, 0, 0.58);
+}
+
+.download-panel {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: min(620px, calc(100% - 28px));
+    transform: translate(-50%, 110%);
+    background: #101522;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-bottom: none;
+    border-radius: 22px 22px 0 0;
+    padding: 12px 18px 22px;
+    box-shadow: 0 -18px 60px rgba(0, 0, 0, 0.45);
+    transition:
+        transform 0.38s cubic-bezier(.22, 1, .36, 1);
+}
+
+.download-sheet.open .download-panel {
+    transform: translate(-50%, 0);
+}
+
+.download-handle {
+    width: 42px;
+    height: 4px;
+    margin: 2px auto 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.download-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.download-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.download-subtitle {
+    margin-top: 4px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.48);
+}
+
+.download-close {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+
+.download-close:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+}
+
+.download-options {
+    display: grid;
+    gap: 8px;
+}
+
+.download-option {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 42px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.download-option:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.download-option:active {
+    transform: scale(0.985);
+}
+
+.download-option-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.06);
+    font-size: 18px;
+}
+
+.download-option strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.download-option small {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.download-option-arrow {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* ==========================================
+   EXPORT CLASSROOM NAMES
+   ========================================== */
+
+.print-export-room .seat {
+    position: relative;
+}
+
+.print-export-room .seat-number {
+    position: absolute;
+    top: 7px;
+    left: 9px;
+    z-index: 2;
+}
+
+.print-export-room .export-name {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 10px 10px;
+
+    box-sizing: border-box;
+
+    color: #f5f7fb;
+    background: transparent;
+
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 0.95;
+
+    text-align: center;
+    text-transform: uppercase;
+
+    white-space: normal;
+    overflow: hidden;
+
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+
+@media print {
+    body > * {
+        visibility: hidden !important;
+    }
+
+    .print-export-room,
+    .print-export-room * {
+        visibility: visible !important;
+    }
+
+    .print-export-room {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: max-content !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        padding: 32px !important;
+        margin: 0 !important;
+        background: #0b111e !important;
+        border: none !important;
+        border-radius: 0 !important;
+        transform: none !important;
+    }
+
+    .print-export-room .zoom-canvas {
+        transform: none !important;
+        transition: none !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+    }
+
+    .print-export-room .classroom-grid {
+        min-width: 0 !important;
+    }
+
+
+
+    .print-export-room .delete-seat,
+    .download-sheet {
+        display: none !important;
+    }
+}
+
+@page {
+    margin: 0;
+}
 </style>
 </head>
 
@@ -1219,12 +1472,13 @@
                 Clear Names
             </button>
 
-            <button
-                class="button primary"
-                id="saveLayout"
-            >
-                Save Layout
-            </button>
+      <button
+          class="button primary"
+          id="saveLayout"
+          type="button"
+      >
+          ⬇ Download
+      </button>
       <button class="button danger" id="resetLayout" type="button" title="Reset the entire classroom layout">🚀 Reset Entire Layout</button>
 
         </div>
@@ -2678,7 +2932,7 @@
     function resetEntireLayout() {
     const confirmed = confirm("Reset the entire classroom layout?\n\nThis will restore every seat, clear every name, reset the classroom settings, reset zoom, and erase the saved layout.");
     if (confirmed === false) return;
-    data = { rows: 5, desks: 4, spacing: 18, roomName: "Classroom", seats: [] };
+    data = { rows: 5, desks: 4, spacing: 18, seats: [] };
     rowsInput.value = 5;
     desksInput.value = 4;
     spacingInput.value = 18;
@@ -3027,37 +3281,6 @@ function deleteSeat(seatId) {
             }
         );
 
-
-    /*
-        ==========================================
-        SAVE BUTTON
-        ==========================================
-    */
-
-    document
-        .getElementById("saveLayout")
-        .addEventListener(
-            "click",
-            () => {
-
-                saveData();
-
-
-                status.textContent =
-                    "Layout saved ✓";
-
-
-                setTimeout(
-                    () => {
-
-                        updateStatus();
-
-                    },
-                    1200
-                );
-
-            }
-        );
 
 
     /*
@@ -3626,6 +3849,757 @@ function deleteSeat(seatId) {
 
     updateZoom();
 
+
+</script>
+
+<div class="download-sheet" id="downloadSheet">
+    <div class="download-sheet-backdrop" id="downloadBackdrop"></div>
+
+    <div class="download-panel">
+        <div class="download-handle"></div>
+
+        <div class="download-header">
+            <div>
+                <div class="download-title">Download Classroom</div>
+                <div class="download-subtitle">
+                    Export only the classroom layout
+                </div>
+            </div>
+
+            <button
+                class="download-close"
+                id="downloadClose"
+                type="button"
+                aria-label="Close download menu"
+            >
+                ×
+            </button>
+        </div>
+
+        <div class="download-options">
+
+            <button
+                class="download-option"
+                type="button"
+                data-export="png"
+            >
+                <span class="download-option-icon">🖼️</span>
+                <span>
+                    <strong>PNG Image</strong>
+                    <small>High-quality classroom image</small>
+                </span>
+                <span class="download-option-arrow">›</span>
+            </button>
+
+            <button
+                class="download-option"
+                type="button"
+                data-export="jpg"
+            >
+                <span class="download-option-icon">🖼️</span>
+                <span>
+                    <strong>JPG Image</strong>
+                    <small>Smaller image file</small>
+                </span>
+                <span class="download-option-arrow">›</span>
+            </button>
+
+            <button
+                class="download-option"
+                type="button"
+                data-export="pdf"
+            >
+                <span class="download-option-icon">📄</span>
+                <span>
+                    <strong>PDF</strong>
+                    <small>Ready to save or print</small>
+                </span>
+                <span class="download-option-arrow">›</span>
+            </button>
+
+            <button
+                class="download-option"
+                type="button"
+                data-export="print"
+            >
+                <span class="download-option-icon">🖨️</span>
+                <span>
+                    <strong>Print</strong>
+                    <small>Open the print dialog</small>
+                </span>
+                <span class="download-option-arrow">›</span>
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+/*
+    ==========================================
+    DOWNLOAD / EXPORT
+    ==========================================
+*/
+
+const downloadSheet =
+    document.getElementById("downloadSheet");
+
+const downloadBackdrop =
+    document.getElementById("downloadBackdrop");
+
+const downloadClose =
+    document.getElementById("downloadClose");
+
+const saveLayout =
+    document.getElementById("saveLayout");
+
+
+function openDownloadSheet() {
+
+    saveData();
+
+    downloadSheet.classList.add(
+        "open"
+    );
+
+}
+
+
+function closeDownloadSheet() {
+
+    downloadSheet.classList.remove(
+        "open"
+    );
+
+}
+
+
+saveLayout.addEventListener(
+    "click",
+    openDownloadSheet
+);
+
+
+downloadClose.addEventListener(
+    "click",
+    closeDownloadSheet
+);
+
+
+downloadBackdrop.addEventListener(
+    "click",
+    closeDownloadSheet
+);
+
+
+/*
+    ==========================================
+    CREATE CLEAN EXPORT COPY
+    ==========================================
+
+    The real classroom DOM contains:
+
+        inputs
+        delete buttons
+        zoom transforms
+        scrolling
+        UI interactions
+
+    The export gets its own temporary
+    copy so none of those UI elements
+    appear in the downloaded image.
+*/
+
+function createExportClone() {
+
+    const source =
+        document.getElementById("room");
+
+    if (!source) {
+
+        return null;
+
+    }
+
+
+    const clone =
+        source.cloneNode(true);
+
+
+    /*
+        Give the clone its own export class.
+
+        The original classroom is untouched.
+    */
+
+    clone.removeAttribute("id");
+
+    clone.classList.add(
+        "print-export-room"
+    );
+
+
+    /*
+        Remove the viewport behavior.
+    */
+
+    clone.style.position =
+        "fixed";
+
+    clone.style.left =
+        "0";
+
+    clone.style.top =
+        "0";
+
+    clone.style.width =
+        "max-content";
+
+    clone.style.height =
+        "auto";
+
+    clone.style.minHeight =
+        "0";
+
+    clone.style.maxHeight =
+        "none";
+
+    clone.style.overflow =
+        "visible";
+
+    clone.style.padding =
+        "32px";
+
+    clone.style.margin =
+        "0";
+
+    clone.style.transform =
+        "none";
+
+    clone.style.transition =
+        "none";
+
+    clone.style.background =
+        "#0b111e";
+
+    clone.style.zIndex =
+        "-1";
+
+
+    /*
+        Remove zoom from the copied classroom.
+    */
+
+    const zoomCanvas =
+        clone.querySelector(
+            ".zoom-canvas"
+        );
+
+    if (zoomCanvas) {
+
+        zoomCanvas.style.transform =
+            "none";
+
+        zoomCanvas.style.transition =
+            "none";
+
+        zoomCanvas.style.minWidth =
+            "0";
+
+        zoomCanvas.style.minHeight =
+            "0";
+
+        zoomCanvas.style.width =
+            "max-content";
+
+    }
+
+
+    const grid =
+        clone.querySelector(
+            ".classroom-grid"
+        );
+
+    if (grid) {
+
+        grid.style.minWidth =
+            "0";
+
+        grid.style.width =
+            "max-content";
+
+    }
+
+
+    /*
+        ======================================
+        NAME INPUT → PLAIN TEXT
+        ======================================
+
+        Empty seats do NOT show:
+
+            Enter name...
+
+        Filled seats show the actual
+        student name directly.
+    */
+
+    clone
+        .querySelectorAll(
+            ".name-input"
+        )
+        .forEach(input => {
+
+            const name =
+                input.value.trim();
+
+
+            if (!name) {
+
+                input.remove();
+
+                return;
+
+            }
+
+
+            const nameElement =
+                document.createElement(
+                    "div"
+                );
+
+            nameElement.className =
+                "export-name";
+
+            nameElement.textContent =
+                name;
+
+
+            input.replaceWith(
+                nameElement
+            );
+
+        });
+
+    /*
+        ======================================
+        EXPORT NAMES — AUTO SIZE
+        ======================================
+    */
+
+    clone.style.visibility =
+        "hidden";
+
+    clone.style.zIndex =
+        "9998";
+
+    document.body.appendChild(
+        clone
+    );
+
+
+    /*
+        Start large.
+
+        Shrink only when the actual rendered
+        text would touch the seat boundaries.
+    */
+
+    clone
+        .querySelectorAll(
+            ".export-name"
+        )
+        .forEach(nameElement => {
+
+            const seat =
+                nameElement.closest(
+                    ".seat"
+                );
+
+            if (!seat) {
+                return;
+            }
+
+
+            nameElement.style.fontSize =
+                "60px";
+
+            nameElement.style.fontWeight =
+                "900";
+
+            nameElement.style.lineHeight =
+                "0.9";
+
+            nameElement.style.textAlign =
+                "center";
+
+            nameElement.style.textTransform =
+                "uppercase";
+
+            nameElement.style.whiteSpace =
+                "nowrap";
+
+            nameElement.style.wordBreak =
+                "normal";
+
+            nameElement.style.overflow =
+                "visible";
+
+            nameElement.style.overflowWrap =
+                "normal";
+
+            nameElement.style.padding =
+                "0";
+
+
+            const minFontSize =
+                12;
+
+            const maxFontSize =
+                60;
+
+            const horizontalPadding =
+                14;
+
+            const verticalPadding =
+                20;
+
+
+            const seatRect =
+                seat.getBoundingClientRect();
+
+
+            const range =
+                document.createRange();
+
+
+            if (
+                !nameElement.firstChild
+            ) {
+                return;
+            }
+
+
+            range.selectNodeContents(
+                nameElement.firstChild
+            );
+
+
+            let fontSize =
+                maxFontSize;
+
+
+            while (
+                fontSize >
+                minFontSize
+            ) {
+
+                nameElement.style.fontSize =
+                    `${fontSize}px`;
+
+
+                void nameElement.offsetWidth;
+
+
+                const textRect =
+                    range.getBoundingClientRect();
+
+
+                const fitsWidth =
+                    textRect.width <=
+                    (
+                        seatRect.width -
+                        horizontalPadding
+                    );
+
+
+                const fitsHeight =
+                    textRect.height <=
+                    (
+                        seatRect.height -
+                        verticalPadding
+                    );
+
+
+                if (
+                    fitsWidth &&
+                    fitsHeight
+                ) {
+                    break;
+                }
+
+
+                fontSize -= 1;
+
+            }
+
+
+            nameElement.style.fontSize =
+                `${Math.max(
+                    fontSize,
+                    minFontSize
+                )}px`;
+
+        });
+
+
+    clone.style.visibility =
+        "visible";
+
+
+    /*
+        ======================================
+        Delete buttons are UI only.
+    */
+
+    clone
+        .querySelectorAll(
+            ".delete-seat"
+        )
+        .forEach(button => {
+
+            button.remove();
+
+        });
+
+
+    /*
+        The export should not inherit
+        hover movement from the real UI.
+    */
+
+    clone
+        .querySelectorAll(
+            ".seat"
+        )
+        .forEach(seat => {
+
+            seat.style.transform =
+                "none";
+
+            seat.style.transition =
+                "none";
+
+        });
+
+
+    /*
+        Append temporarily.
+
+        It is removed immediately after
+        PNG/JPG/Print is finished.
+    */
+
+    document.body.appendChild(
+        clone
+    );
+
+
+    return clone;
+
+}
+
+
+/*
+    ==========================================
+    EXPORT
+    ==========================================
+*/
+
+async function exportClassroom(
+    format
+) {
+
+    const clone =
+        createExportClone();
+
+
+    if (!clone) {
+
+        alert(
+            "Classroom area could not be found."
+        );
+
+        return;
+
+    }
+
+
+    closeDownloadSheet();
+
+
+    /*
+        ======================================
+        PDF / PRINT
+        ======================================
+    */
+
+    if (
+        format === "print" ||
+        format === "pdf"
+    ) {
+
+        const cleanup =
+            () => {
+
+                clone.remove();
+
+                window.removeEventListener(
+                    "afterprint",
+                    cleanup
+                );
+
+            };
+
+
+        window.addEventListener(
+            "afterprint",
+            cleanup
+        );
+
+
+        window.print();
+
+        return;
+
+    }
+
+
+    /*
+        ======================================
+        PNG / JPG
+        ======================================
+    */
+
+    if (
+        typeof html2canvas ===
+        "undefined"
+    ) {
+
+        clone.remove();
+
+        alert(
+            "Image export library has not loaded yet."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const canvas =
+            await html2canvas(
+                clone,
+                {
+                    backgroundColor:
+                        "#0b111e",
+
+                    scale: 2,
+
+                    useCORS: true,
+
+                    logging: false,
+
+                    scrollX: 0,
+
+                    scrollY: 0,
+
+                    windowWidth:
+                        clone.scrollWidth,
+
+                    windowHeight:
+                        clone.scrollHeight
+                }
+            );
+
+
+        const mime =
+            format === "jpg"
+                ? "image/jpeg"
+                : "image/png";
+
+
+        const extension =
+            format === "jpg"
+                ? "jpg"
+                : "png";
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.download =
+            `classroom-layout.${extension}`;
+
+
+        link.href =
+            canvas.toDataURL(
+                mime,
+                format === "jpg"
+                    ? 0.95
+                    : 1
+            );
+
+
+        link.click();
+
+
+    } catch (error) {
+
+        console.error(
+            "Classroom export failed:",
+            error
+        );
+
+
+        alert(
+            "Could not export the classroom layout."
+        );
+
+
+    } finally {
+
+        clone.remove();
+
+    }
+
+}
+
+
+/*
+    ==========================================
+    DOWNLOAD OPTIONS
+    ==========================================
+*/
+
+document
+    .querySelectorAll(
+        "[data-export]"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const format =
+                    button.dataset.export;
+
+                exportClassroom(
+                    format
+                );
+
+            }
+        );
+
+    });
 </script>
 
 </body>
